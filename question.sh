@@ -16,6 +16,7 @@
 #  * Columna 3: Número entero. `\N` indica NULL.
 #  * Columna 4: Número decimal. `\N` indica NULL.
 #  
+# docker run --rm -it --name ubuntu -v "%cd%":/workspace jdvelasq/ubuntu:20.04
 #  
 #  Usted debe escribir un script en bash que use sed para que realice 
 #  las siguientes acciones:
@@ -39,5 +40,15 @@
 #  ...
 #  2014-09-01,A,3,100.4
 #
-#  >>> Escriba su codigo a partir de este punto <<<
-#
+sed -e 's/^\([0-9]\)\//0\1\//g;
+s/\/\([0-9]\)\//\/0\1\//g;
+s/\/\([0-9][0-9]\);/\/20\1;/g;
+s/\([0-9][0-9]\)\/\([0-9][0-9]\)\/\([0-9][0-9][0-9][0-9]\)/\3-\2-\1/g;
+s/a/A/g;
+s/c/C/g;
+s/n/N/g;
+s/;N/;\\N/g;
+s/;;/;\\N;/g;
+s/N;$/N;\\N/g;
+s/,/./g;
+s/;/,/g'  data.csv > output.csv
